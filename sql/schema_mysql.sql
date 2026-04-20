@@ -1,0 +1,38 @@
+CREATE TABLE IF NOT EXISTS arma_users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(64) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  role VARCHAR(16) NOT NULL DEFAULT 'padrao',
+  must_change_password TINYINT(1) NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS arma_categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(120) UNIQUE NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS arma_assets (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(180) NOT NULL,
+  description TEXT,
+  category VARCHAR(120) NOT NULL DEFAULT 'Geral',
+  ip_lan VARCHAR(64) DEFAULT '',
+  ip_dmz VARCHAR(64) DEFAULT '',
+  port VARCHAR(16) DEFAULT '',
+  environment VARCHAR(32) NOT NULL DEFAULT 'Produção',
+  url VARCHAR(255) DEFAULT '',
+  tags TEXT,
+  created_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS arma_audit_logs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(64) NOT NULL,
+  action VARCHAR(32) NOT NULL,
+  details TEXT,
+  created_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO arma_categories (name) VALUES ('Geral'), ('Infraestrutura'), ('Aplicação'), ('Segurança')
+  ON DUPLICATE KEY UPDATE name = name;
